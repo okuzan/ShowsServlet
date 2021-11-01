@@ -1,11 +1,14 @@
 package org.training;
 
 
-import org.training.command.*;
+import org.training.command.Command;
 import org.training.command.admin.AddItemCommand;
 import org.training.command.admin.EditItemCommand;
 import org.training.command.admin.UsersCommand;
-import org.training.command.all.*;
+import org.training.command.all.AccountCommand;
+import org.training.command.all.ExceptionCommand;
+import org.training.command.all.LogOutCommand;
+import org.training.command.all.ShowsCommand;
 import org.training.command.unauth.LoginCommand;
 import org.training.command.unauth.RegisterCommand;
 import org.training.command.user.BuyCommand;
@@ -13,7 +16,9 @@ import org.training.command.user.TicketsCommand;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +29,6 @@ public class HelloServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-//        httpServletResponse.getWriter().print("Hello from servlet");
         processRequest(request, response);
 
     }

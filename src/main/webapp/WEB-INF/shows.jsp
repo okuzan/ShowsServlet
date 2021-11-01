@@ -3,6 +3,10 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="/WEB-INF/tag/errorTag.tld" prefix="et" %>
 <%@ taglib uri="/WEB-INF/tag/infoTag.tld" prefix="ib" %>
+<fmt:setBundle basename="messages" var="bundle"/>
+<fmt:message bundle="${bundle}" key="date.format" var="dataformat"/>
+<fmt:message bundle="${bundle}" key="date.locale" var="datelocal"/>
+
 
 
 <!doctype html>
@@ -24,14 +28,10 @@
     /**/
     /*}*/
     </style>
-    <title><fmt:message key="menu.shows"/></title>
+    <title>Shows</title>
 </head>
 <body>
 <%@include file="./fragments/headers/general.jsp" %>
-<fmt:setBundle basename="messages" var="bundle"/>
-<fmt:message bundle="${bundle}" key="date.format" var="dataformat"/>
-<fmt:message bundle="${bundle}" key="date.locale" var="datelocal"/>
-
 <div id="filterbar" class="collapse">
     <div class="box border-bottom">
         <div class="form-group text-center">
@@ -316,6 +316,7 @@
         url = URL_add_parameter(url, "start", btoa(dateStart))
         // if (dateEnd !== "")
         url = URL_add_parameter(url, "end", btoa(dateEnd))
+        url = URL_add_parameter(url, "page", "")
 
         window.location.href = url
     }

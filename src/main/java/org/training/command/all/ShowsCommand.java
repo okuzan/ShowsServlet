@@ -32,7 +32,7 @@ public class ShowsCommand implements Command {
         //pagination settings
         int page = 1;
         int recordsPerPage = Utilities.RECORDS_PER_PAGE;
-        if (request.getParameter("page") != null)
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty())
             page = Integer.parseInt(request.getParameter("page"));
 
         shows = exhibitionDao.countFiltered(title, priceMin, priceMax, start, end,
