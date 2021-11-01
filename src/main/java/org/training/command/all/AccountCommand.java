@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 public class AccountCommand implements Command {
     private static final String PATH = "WEB-INF/user/account.jsp";
-    private static final String SUCCESS_PATH = "redirect:/login";
+    private static final String SUCCESS_PATH = "redirect:/unauth/login";
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -26,12 +26,12 @@ public class AccountCommand implements Command {
                 double dec = Double.parseDouble(balance);
                 BigDecimal decimal = BigDecimal.valueOf(dec);
                 userDao.replenish(username, decimal);
-                return "redirect:/account";
+                return "redirect:/auth/account";
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-
+        System.out.println(request.getMethod());
         request.setAttribute("user", user);
         return PATH;
     }

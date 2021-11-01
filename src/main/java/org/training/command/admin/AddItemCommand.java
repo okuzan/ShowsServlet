@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class AddItemCommand implements Command {
     private static final String PATH = "WEB-INF/admin/add_item.jsp";
-    private static final String SUCCESS_PATH = "redirect:/all-shows";
+    private static final String SUCCESS_PATH = "redirect:/shows";
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -39,7 +39,7 @@ public class AddItemCommand implements Command {
         try {
             Double.parseDouble(price);
             Exhibition show = new Exhibition(name, price, startStr, endStr, halls);
-//            exhibitionDao.save(show);
+            exhibitionDao.save(show);
             request.setAttribute("flash.added", bundle.getString("add.success"));
             return SUCCESS_PATH;
         } catch (NumberFormatException e) {

@@ -27,7 +27,7 @@
         }
 
     </style>
-    <title>bootstrap</title>
+    <title>Add item</title>
 </head>
 <body>
 <%@include file="../fragments/headers/general.jsp" %>
@@ -41,7 +41,7 @@
             <br/>
             <div class="form">
                 <h1><fmt:message key="exhibition"/></h1>
-                <form action="${pageContext.request.contextPath}/add-item" method="post">
+                <form action="${pageContext.request.contextPath}/admin/add-item" method="post">
 
                     <div class="form-group">
 

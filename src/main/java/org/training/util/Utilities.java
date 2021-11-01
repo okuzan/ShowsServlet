@@ -17,7 +17,9 @@ public class Utilities {
     }
 
     public static ResourceBundle getBundle(HttpServletRequest request) {
+        System.out.println(request.getRequestURI());
         String lang = request.getParameter("lang");
+        System.out.println(lang+ ":lang");
         return lang == null
                 ? ResourceBundle.getBundle("messages")
                 : ResourceBundle.getBundle("messages", Locale.forLanguageTag(lang));

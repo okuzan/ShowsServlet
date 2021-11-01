@@ -4,7 +4,7 @@
 <%@ taglib uri="/WEB-INF/tag/errorTag.tld" prefix="et" %>
 <%@ taglib uri="/WEB-INF/tag/infoTag.tld" prefix="ib" %>
 
-
+<fmt:setLocale value="${param.lang}"/>
 
 <!doctype html>
 <html lang="en">
@@ -63,8 +63,8 @@
                 </div>
             </div>
             <div class="d-flex align-items-center justify-content-between mt-2">
-                <div><span id="amount-left" class="font-weight-bold"></span> <fmt:message key="currency"/></div>
-                <div><span id="amount-right" class="font-weight-bold"></span> <fmt:message key="currency"/></div>
+                <div><span id="amount-left" class="font-weight-bold"></span>%</div>
+                <div><span id="amount-right" class="font-weight-bold"></span>%</div>
             </div>
         </div>
 
@@ -118,6 +118,8 @@
             <ib:infobox cause="deleted"/>
             <ib:infobox cause="added"/>
             <ib:infobox cause="failed" danger="true"/>
+            <ib:infobox cause="funds-bad" danger="true"/>
+            <ib:infobox cause="funds-good"/>
             <h1><fmt:message key="menu.shows"/></h1>
             <table id="posts" class="table table-bordered table-responsive-sm">
                 <thead>
@@ -210,48 +212,14 @@
     </div>
 </div>
 <script type="text/javascript">
-
-    function filterData() {
-        $.ajax({
-            type: "POST",
-            url: "/api/shows/filtered",
-            error: function (e) {
-
-                alert('Something went south!');
-            },
-            // success: function (e) {
-            //     alert('good!');
-            // }
-        }).done(
-            function (response) {
-                alert(response)
-                window.location.href = "/api/shows"
-            }
-        );
-
-    }
-</script>
-
-<script type="text/javascript">
     function buy(btn) {
-        // const id = btn.getAttribute("data-id")
+        let lang = "${param.lang}"
         const id = btn.getAttribute("title")
         const price = btn.getAttribute("value")
-        alert(price);
         $.ajax({
             type: "POST",
-            url: "/buy",
+            url: "/user/buy?lang=" + lang,
             data: {id: id, price: price},
-            error: function (xhr, status, error) {
-                // alert('Something went south!');
-                // alert(xhr.responseText);
-                var err = JSON.parse(xhr.responseText);
-                alert(err.message);
-                // alert(error);
-            },
-            success: function (e) {
-                alert("success");
-            }
         }).done(
             function (response) {
                 alert(response)
@@ -261,7 +229,7 @@
 
     function edit(btn) {
         const id = btn.getAttribute("title")
-        window.location.href = '/edit-item?id=' + id
+        window.location.href = '${pageContext.request.contextPath}/admin/edit-item?id=' + id
     }
 
     function reset() {

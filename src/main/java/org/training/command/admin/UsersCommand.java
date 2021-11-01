@@ -13,7 +13,7 @@ import java.util.List;
 
 public class UsersCommand implements Command {
     private static final String PATH = "WEB-INF/admin/users.jsp";
-    private static final String SUCCESS_PATH = "redirect:/login";
+    private static final String SUCCESS_PATH = "redirect:/unauth/login";
 
     @Override
     public String execute(HttpServletRequest request) {

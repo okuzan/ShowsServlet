@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 public class RegisterCommand implements Command {
     private static final String PATH = "WEB-INF/unauth/registration.jsp";
-    private static final String SUCCESS_PATH = "redirect:/login";
+    private static final String SUCCESS_PATH = "redirect:/unauth/login";
 
     @Override
     public String execute(HttpServletRequest request) {

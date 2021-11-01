@@ -22,7 +22,7 @@
             </br>
             <h1><fmt:message key="login.title"/></h1>
 
-            <form action="${pageContext.request.contextPath}/login" method="post">
+            <form action="${pageContext.request.contextPath}/unauth/login" method="post">
                 <div class="form-group">
                     <label for="username"><fmt:message key="login.mail"/></label>:
                     <input type="text"

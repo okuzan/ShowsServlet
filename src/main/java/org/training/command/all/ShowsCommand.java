@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ShowsCommand implements Command {
     private static final String PATH = "WEB-INF/shows.jsp";
-    private static final String SUCCESS_PATH = "redirect:/login";
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -28,7 +27,6 @@ public class ShowsCommand implements Command {
         DaoFactory factory = DaoFactory.getInstance();
         ExhibitionDao exhibitionDao = factory.createExhibitionDao();
         List<Exhibition> shows;
-        System.out.println("GJFKLJKJFGLKJKFJKD________");
         //pagination settings
         int page = 1;
         int recordsPerPage = Utilities.RECORDS_PER_PAGE;

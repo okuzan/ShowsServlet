@@ -37,6 +37,7 @@ public class HelloServlet extends HttpServlet {
             throws IOException, ServletException {
         processRequest(request, response);
     }
+
     public void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         processRequest(request, response);
@@ -45,17 +46,16 @@ public class HelloServlet extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        path = path.substring(1);
-//        path = path.replaceAll(".*/shows/", "");
+        path = path.replaceAll("^/", "");
         Command command = commands.getOrDefault(path,
                 (r) -> "/index.jsp");
-        System.out.println(command.getClass().getName());
         String page = command.execute(request);
-        //request.getRequestDispatcher(page).forward(request,response);
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", ""));
+        } else if (page.contains("reply:")) {
+            response.getWriter().write(page.replace("reply:", ""));
         } else {
-            request.getRequestDispatcher(page).forward(request, response);
+            request.getRequestDispatcher("/" + page).forward(request, response);
         }
     }
 
@@ -64,25 +64,25 @@ public class HelloServlet extends HttpServlet {
         servletConfig.getServletContext()
                 .setAttribute("loggedUsers", new HashSet<String>());
 
-        commands.put("logout",
+        commands.put("auth/logout",
                 new LogOutCommand());
-        commands.put("login",
+        commands.put("unauth/login",
                 new LoginCommand());
-        commands.put("all-shows",
+        commands.put("shows",
                 new ShowsCommand());
-        commands.put("add-item",
+        commands.put("admin/add-item",
                 new AddItemCommand());
-        commands.put("buy",
+        commands.put("user/buy",
                 new BuyCommand());
-        commands.put("edit-item",
+        commands.put("admin/edit-item",
                 new EditItemCommand());
-        commands.put("account",
+        commands.put("auth/account",
                 new AccountCommand());
-        commands.put("tickets",
+        commands.put("user/tickets",
                 new TicketsCommand());
-        commands.put("users",
+        commands.put("admin/users",
                 new UsersCommand());
-        commands.put("register",
+        commands.put("unauth/register",
                 new RegisterCommand());
         commands.put("exception",
                 new ExceptionCommand());

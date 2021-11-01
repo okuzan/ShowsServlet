@@ -15,14 +15,14 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        if(request.getMethod().equals("GET"))
+        if (request.getMethod().equals("GET"))
             return "/WEB-INF/unauth/login.jsp";
 
         String name = request.getParameter("username");
         String pass = request.getParameter("password");
         ResourceBundle bundle = Utilities.getBundle(request);
         if (name == null || name.equals("") || pass == null || pass.equals("")) {
-            request.setAttribute("badData",bundle.getString("login.fail"));
+            request.setAttribute("badData", bundle.getString("login.fail"));
             return "/WEB-INF/unauth/login.jsp";
         }
 
@@ -30,30 +30,22 @@ public class LoginCommand implements Command {
         UserDao userDao = factory.createUserDao();
         User user = userDao.findByUsername(name);
 
-        User.ROLE role = User.ROLE.UNKNOWN;
+//        User.ROLE role = User.ROLE.UNKNOWN;
         if (user != null && BCrypt.checkpw(pass, user.getPassword())) {
+            if (CommandUtility.checkUserIsLogged(request, name)) {
+                System.out.println("is logged!!!");
+                return "/WEB-INF/error.jsp";
+            }
             System.out.println("logged in");
             System.out.println(user.getRole().name());
-            role = user.getRole();
+            CommandUtility.setUserRole(request, user.getRole(), name);
+            return "redirect:/";
+
         } else {
-            System.out.println("not found");
+            request.setAttribute("badData", bundle.getString("login.fail"));
+            return "/WEB-INF/unauth/login.jsp";
         }
 
-        if (CommandUtility.checkUserIsLogged(request, name)) {
-            return "/WEB-INF/error.jsp";
-        }
-
-        if (role == User.ROLE.ADMIN) {
-            CommandUtility.setUserRole(request, User.ROLE.ADMIN, name);
-            return "redirect:/admin";
-        } else if (role == User.ROLE.USER) {
-            CommandUtility.setUserRole(request, User.ROLE.USER, name);
-
-            return "redirect:/user";
-        } else {
-            CommandUtility.setUserRole(request, User.ROLE.UNKNOWN, name);
-            return "/login";
-        }
+//        return "/WEB-INF/error.jsp";
     }
-
 }

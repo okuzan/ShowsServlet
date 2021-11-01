@@ -45,11 +45,11 @@ public class UserDaoImpl implements UserDao {
                 "select user_id,enabled,password,username,email,users.name,balance,roles.name from users left join roles on users.role_id = roles.id where email = ?")) {
             statement.setString(1, emailNeeded);
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            if (set.next()) {
-                return getUserFromSet(set);
-            } else return null;
-
+            try (ResultSet set = statement.getResultSet()) {
+                if (set.next()) {
+                    return getUserFromSet(set);
+                } else return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Can't find user", e);
@@ -62,10 +62,10 @@ public class UserDaoImpl implements UserDao {
                 "select user_id,enabled,password,username,email,users.name,balance,roles.name from users left join roles on users.role_id = roles.id where users.user_id = ?")) {
             statement.setLong(1, id);
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            if (set.next()) {
-                return getUserFromSet(set);
-            } else return null;
+            try (ResultSet set = statement.getResultSet()) {
+                if (set.next()) return getUserFromSet(set);
+                else return null;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,10 +119,9 @@ public class UserDaoImpl implements UserDao {
 
     private List<User> getUsers(PreparedStatement statement) throws SQLException {
         if (!statement.execute()) return null;
-        ResultSet set = statement.getResultSet();
         List<User> resultList = new ArrayList<>();
-        while (set.next()) {
-            resultList.add(getUserFromSet(set));
+        try (ResultSet set = statement.getResultSet()) {
+            while (set.next()) resultList.add(getUserFromSet(set));
         }
         return resultList;
     }

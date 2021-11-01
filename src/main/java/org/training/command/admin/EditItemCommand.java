@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 public class EditItemCommand implements Command {
     private static final String PATH = "WEB-INF/admin/edit_item.jsp";
-    private static final String SUCCESS_PATH = "redirect:/all-shows";
+    private static final String SUCCESS_PATH = "redirect:/shows";
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -24,7 +24,13 @@ public class EditItemCommand implements Command {
             String idStr = request.getParameter("id");
             long id = Long.parseLong(idStr);
             if (request.getMethod().equals("DELETE")) {
-                exhibitionDao.delete(id);
+                try {
+                    exhibitionDao.delete(id);
+                } catch (RuntimeException e)
+                {
+                    System.out.println("catched!");
+                    return "reply:Exhibition has sold tickets!";
+                }
                 request.setAttribute("flash.deleted", bundle.getString("delete.success"));
                 return SUCCESS_PATH;
             }

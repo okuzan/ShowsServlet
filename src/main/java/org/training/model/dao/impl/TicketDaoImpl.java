@@ -59,25 +59,25 @@ public class TicketDaoImpl implements TicketDao {
                         "where users.email = ?")) {
             statement.setString(1, email);
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
             List<Ticket> resultList = new ArrayList<>();
-            while (set.next()) {
-                Long id = set.getLong(1);
-                String name = set.getString(2);
-                Timestamp startStamp = set.getTimestamp(3);
-                Timestamp endStamp = set.getTimestamp(4);
-                Double price = set.getDouble(5);
-                Timestamp stamp = set.getTimestamp(6);
-                Long ticketId = set.getLong(7);
-                ExhibitionDaoImpl dao = new ExhibitionDaoImpl(con);
-                List<Integer> halls = dao.findHalls(id);
-                Exhibition show = new Exhibition(id, name, price, startStamp, endStamp, halls);
-                resultList.add(new Ticket(ticketId, price, stamp, show));
+            try (ResultSet set = statement.getResultSet()) {
+                while (set.next()) {
+                    Long id = set.getLong(1);
+                    String name = set.getString(2);
+                    Timestamp startStamp = set.getTimestamp(3);
+                    Timestamp endStamp = set.getTimestamp(4);
+                    Double price = set.getDouble(5);
+                    Timestamp stamp = set.getTimestamp(6);
+                    Long ticketId = set.getLong(7);
+                    ExhibitionDaoImpl dao = new ExhibitionDaoImpl(con);
+                    List<Integer> halls = dao.findHalls(id);
+                    Exhibition show = new Exhibition(id, name, price, startStamp, endStamp, halls);
+                    resultList.add(new Ticket(ticketId, price, stamp, show));
+                }
             }
             return resultList;
         } catch (SQLException e) {
             throw new RuntimeException("Can't get tickets!", e);
         }
-
     }
 }

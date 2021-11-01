@@ -16,7 +16,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="${pageContext.request.contextPath}/all-shows" class="nav-link px-2 text-white"><fmt:message key="menu.shows"/></a>
+                    <li><a href="${pageContext.request.contextPath}/shows" class="nav-link px-2 text-white"><fmt:message key="menu.shows"/></a>
                     </li>
                     <li><a href="/about" class="nav-link px-2 text-white"><fmt:message key="menu.about"/></a></li>
                     <li class="nav-item dropdown">
@@ -32,9 +32,9 @@
                 </ul>
 
                 <div class="text-end">
-                    <button onclick="location.href='/login'" type="button" class="btn btn-outline-light me-2"
+                    <button onclick="location.href='/unauth/login'" type="button" class="btn btn-outline-light me-2"
                     ><fmt:message key="login.button"/></button>
-                    <button onclick="location.href='/register'" type="button" class="btn btn-warning"
+                    <button onclick="location.href='/unauth/register'" type="button" class="btn btn-warning"
                     ><fmt:message key="registration.button"/></button>
                 </div>
             </div>

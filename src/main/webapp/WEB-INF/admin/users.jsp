@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><fmt:message key="menu.users"/></title>
+    <title>Users</title>
 </head>
 <body>
 <%@include file="../fragments/headers/general.jsp" %>
@@ -91,10 +91,11 @@
         const id = checkboxElem.getAttribute("title");
         let success = "${success}";
         let fail = "${fail}";
+        let path = "${pageContext.request.contextPath}/admin/users"
 
         $.ajax({
             type: "POST",
-            url: "/users",
+            url: path,
             data: {checked: checkboxElem.checked, id: id},
             error: function () {
                 alert(fail);

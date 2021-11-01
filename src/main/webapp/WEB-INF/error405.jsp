@@ -19,10 +19,9 @@
     <title>Main</title>
 </head>
 <body>
-<%@include file="WEB-INF/fragments/headers/general.jsp" %>
+<%@include file="/WEB-INF/fragments/headers/general.jsp" %>
 <br/>
 <br/>
-<ib:infobox cause="access" danger="true"/>
-<h1> <fmt:message key="welcome"/></h1>
+<h1><fmt:message key="access.denied"/></h1>
 </body>
 </html>

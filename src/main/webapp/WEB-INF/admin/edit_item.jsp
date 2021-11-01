@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%--    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>--%>
 
-    <title>bootstrap</title>
+    <title>Edit item</title>
 </head>
 <body>
 <%@include file="../fragments/headers/general.jsp" %>
@@ -26,7 +26,7 @@
         <br class="col-md-6 col-md-offset-3">
 
         <h1><fmt:message key="exhibition"/></h1>
-        <form action="${pageContext.request.contextPath}/edit-item?id=${show.id}" method="post">
+        <form action="${pageContext.request.contextPath}/admin/edit-item?id=${show.id}" method="post">
 
             <div class="form-group">
 
@@ -116,21 +116,21 @@
     function deleteItem() {
         let id = "${show.id}"
         let deleteMsg = "${delete}"
+        let path = "${pageContext.request.contextPath}/admin/edit-item?id=" + id;
+
         alert(id)
         $.ajax({
                 type: "DELETE",
-                url: "/edit-item?id=" + id,
+                url: path,
                 data: {id: id},
                 error: function (e) {
                     alert('Something went south!');
                 },
-                success() {
-                    alert(deleteMsg);
-                }
             }
         ).done(
             function (response) {
-                window.location.href = "/all-shows"
+                alert(response)
+                window.location.href = "/shows"
             }
         );
     }

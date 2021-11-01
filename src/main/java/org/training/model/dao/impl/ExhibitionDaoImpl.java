@@ -42,11 +42,13 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
 
     private Long getIdByNumber(Integer hall) {
         try (PreparedStatement statement = con.prepareStatement(
-                "select id from exhibitions_server.public.halls where number = " + hall)) {
+                "select id from exhibitions_server.public.halls where number = ?")) {
+            statement.setInt(1, hall);
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            set.next();
-            return set.getLong(1);
+            try (ResultSet set = statement.getResultSet()) {
+                set.next();
+                return set.getLong(1);
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get id by number", e);
         }
@@ -68,13 +70,14 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
     @Override
     public Exhibition findById(long idParam) {
         try (PreparedStatement statement = con.prepareStatement(
-                "select id, name, price, end_date, start_date from exhibitions_server.public.exhibitions where id = " + idParam)) {
+                "select id, name, price, end_date, start_date from exhibitions_server.public.exhibitions where id = ?")) {
+            statement.setLong(1, idParam);
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            if (set.next()) {
-                return getExhibitionFromSet(set);
-            } else return null;
-
+            try (ResultSet set = statement.getResultSet()) {
+                if (set.next()) {
+                    return getExhibitionFromSet(set);
+                } else return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Can't find show", e);
@@ -87,8 +90,9 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
         try (PreparedStatement statement = con.prepareStatement(
                 "select id, name, price, end_date, start_date from exhibitions_server.public.exhibitions")) {
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            return getExhibitions(set);
+            try (ResultSet set = statement.getResultSet()) {
+                return getExhibitions(set);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Can't find user", e);
@@ -100,12 +104,9 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
         try (PreparedStatement statement = con.prepareStatement(
                 "select number from exhibitions_server.public.exhibitions_halls " +
                         "left join exhibitions_server.public.halls on exhibitions_halls.hall_id  = halls.id " +
-                        "where exhibitions_halls.id = " + id)) {
-            if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            List<Integer> resultList = new ArrayList<>();
-            while (set.next()) resultList.add(set.getInt(1));
-            return resultList;
+                        "where exhibitions_halls.id = ?" )) {
+            statement.setLong(1, id);
+            return getIntegers(statement);
         } catch (SQLException e) {
             throw new RuntimeException("Can't find halls", e);
         }
@@ -123,13 +124,18 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
     public List<Integer> findAllHalls() {
         try (PreparedStatement statement = con.prepareStatement(
                 "select number from exhibitions_server.public.halls")) {
-            if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
+            return getIntegers(statement);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't find halls", e);
+        }
+    }
+
+    private List<Integer> getIntegers(PreparedStatement statement) throws SQLException {
+        if (!statement.execute()) return null;
+        try (ResultSet set = statement.getResultSet()) {
             List<Integer> resultList = new ArrayList<>();
             while (set.next()) resultList.add(set.getInt(1));
             return resultList;
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't find halls", e);
         }
     }
 
@@ -211,8 +217,9 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
                         "from exhibitions_server.public.exhibitions " +
                         "limit " + noRecords + " offset " + offset)) {
             if (!statement.execute()) return null;
-            ResultSet set = statement.getResultSet();
-            return getExhibitions(set);
+            try (ResultSet set = statement.getResultSet()) {
+                return getExhibitions(set);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Can't find show", e);
@@ -222,8 +229,10 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
 
     public double getMaxPrice() {
         try (PreparedStatement statement = con.prepareStatement(
-                "select max(price) as max_price from exhibitions_server.public.exhibitions")) {
-            ResultSet set = statement.executeQuery();
+                "select max(price) as max_price from exhibitions_server.public.exhibitions");
+             ResultSet set = statement.executeQuery();
+        ) {
+
             set.next();
             return set.getDouble(1);
         } catch (SQLException e) {
@@ -234,8 +243,8 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
 
     public double getMinPrice() {
         try (PreparedStatement statement = con.prepareStatement(
-                "select min(price) as min_price from exhibitions_server.public.exhibitions")) {
-            ResultSet set = statement.executeQuery();
+                "select min(price) as min_price from exhibitions_server.public.exhibitions");
+             ResultSet set = statement.executeQuery()) {
             set.next();
             return set.getDouble(1);
         } catch (SQLException e) {
@@ -273,7 +282,7 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw new RuntimeException("contraint");
         }
     }
 

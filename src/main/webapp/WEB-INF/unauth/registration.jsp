@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Register</title>
+    <title>Registrationr</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript">
@@ -27,7 +27,7 @@
             <div class="col-md-6 col-md-offset-3">
             </br>
                 <h1><fmt:message key="registration.title"/></h1>
-                <form id="regForm" action="${pageContext.request.contextPath}/register" method="post">
+                <form id="regForm" action="${pageContext.request.contextPath}/unauth/register" method="post">
 
                     <div class="form-group">
                         <label for="name" class="control-label">

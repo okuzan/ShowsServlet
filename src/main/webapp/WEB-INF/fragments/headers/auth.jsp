@@ -15,18 +15,18 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="${pageContext.request.contextPath}/all-shows" class="nav-link px-2 text-primary"><fmt:message key="menu.shows"/></a>
+                    <li><a href="${pageContext.request.contextPath}/shows" class="nav-link px-2 text-primary"><fmt:message key="menu.shows"/></a>
                     <c:if test="${sessionScope['role'] == 'ADMIN'}">
-                        <li><a href="/api/users" class="nav-link px-2 link-dark"><fmt:message key="menu.users"/></a>
+                        <li><a href="/admin/users" class="nav-link px-2 link-dark"><fmt:message key="menu.users"/></a>
                         </li>
                     </c:if>
                     <c:if test="${sessionScope['role'] == 'ADMIN'}">
-                        <li><a href="/add-item" class="nav-link px-2 link-dark"><fmt:message key="menu.add"/></a>
+                        <li><a href="/admin/add-item" class="nav-link px-2 link-dark"><fmt:message key="menu.add"/></a>
                         </li>
                     </c:if>
 
                     <c:if test="${sessionScope['role'] == 'USER'}">
-                        <li><a href="/tickets" class="nav-link px-2 link-dark"><fmt:message key="menu.tickets"/></a>
+                        <li><a href="/user/tickets" class="nav-link px-2 link-dark"><fmt:message key="menu.tickets"/></a>
                         </li>
                     </c:if>
                     </li>
@@ -47,7 +47,7 @@
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="<c:url value="/account"/>"><fmt:message
+                        <li><a class="dropdown-item" href="<c:url value="/auth/account"/>"><fmt:message
                                 key="menu.account"/></a></li>
                         <li>
                             <hr class="dropdown-divider">
