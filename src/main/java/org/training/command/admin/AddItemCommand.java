@@ -33,11 +33,13 @@ public class AddItemCommand implements Command {
         String price = request.getParameter("price");
         String[] halls = request.getParameterValues("halls");
         String startStr = request.getParameter("startDateTime");
+        System.out.println(startStr);
         String endStr = request.getParameter("endDateTime");
+        System.out.println(endStr);
         try {
             Double.parseDouble(price);
             Exhibition show = new Exhibition(name, price, startStr, endStr, halls);
-            exhibitionDao.save(show);
+//            exhibitionDao.save(show);
             request.setAttribute("flash.added", bundle.getString("add.success"));
             return SUCCESS_PATH;
         } catch (NumberFormatException e) {

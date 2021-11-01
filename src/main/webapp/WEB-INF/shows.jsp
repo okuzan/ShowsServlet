@@ -3,9 +3,6 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="/WEB-INF/tag/errorTag.tld" prefix="et" %>
 <%@ taglib uri="/WEB-INF/tag/infoTag.tld" prefix="ib" %>
-<fmt:setBundle basename="messages" var="bundle"/>
-<fmt:message bundle="${bundle}" key="date.format" var="dataformat"/>
-<fmt:message bundle="${bundle}" key="date.locale" var="datelocal"/>
 
 
 
@@ -32,6 +29,10 @@
 </head>
 <body>
 <%@include file="./fragments/headers/general.jsp" %>
+<fmt:setBundle basename="messages" var="bundle"/>
+<fmt:message bundle="${bundle}" key="date.format" var="dataformat"/>
+<fmt:message bundle="${bundle}" key="date.locale" var="datelocal"/>
+
 <div id="filterbar" class="collapse">
     <div class="box border-bottom">
         <div class="form-group text-center">

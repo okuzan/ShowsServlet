@@ -54,7 +54,6 @@ public class HelloServlet extends HttpServlet {
         //request.getRequestDispatcher(page).forward(request,response);
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", ""));
-//            response
         } else {
             request.getRequestDispatcher(page).forward(request, response);
         }

@@ -21,7 +21,7 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
     public Exhibition save(Exhibition entity) {
         try (PreparedStatement statement =
                      con.prepareStatement("insert into exhibitions_server.public.exhibitions(" +
-                             "name, price, end_date, start_date) values(?,?,?,?) returning id")) {
+                             "name, price, start_date, end_date) values(?,?,?,?) returning id")) {
             statement.setString(1, entity.getName());
             statement.setDouble(2, entity.getPrice());
             statement.setTimestamp(3, Utilities.ldtToStamp(entity.getStartDate()));
@@ -138,7 +138,7 @@ public class ExhibitionDaoImpl implements ExhibitionDao {
                                           String startDate, String endDate,
                                           int offset, int noRecords) {
         try (Statement statement = con.createStatement()) {
-            String query = "select id, name, price, end_date, start_date from exhibitions_server.public.exhibitions where 1=1 ";
+            String query = "select id, name, price, start_date, end_date from exhibitions_server.public.exhibitions where 1=1 ";
             query = getString(nameStr, priceMin, priceMax, startDate, endDate, query);
             query += "limit " + noRecords + " offset " + offset;
             System.out.println(query);
