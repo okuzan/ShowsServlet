@@ -5,10 +5,7 @@ import org.training.command.Command;
 import org.training.command.admin.AddItemCommand;
 import org.training.command.admin.EditItemCommand;
 import org.training.command.admin.UsersCommand;
-import org.training.command.all.AccountCommand;
-import org.training.command.all.ExceptionCommand;
-import org.training.command.all.LogOutCommand;
-import org.training.command.all.ShowsCommand;
+import org.training.command.all.*;
 import org.training.command.unauth.LoginCommand;
 import org.training.command.unauth.RegisterCommand;
 import org.training.command.user.BuyCommand;
@@ -70,6 +67,8 @@ public class HelloServlet extends HttpServlet {
                 new LoginCommand());
         commands.put("shows",
                 new ShowsCommand());
+        commands.put("about",
+                new AboutCommand());
         commands.put("admin/add-item",
                 new AddItemCommand());
         commands.put("user/buy",

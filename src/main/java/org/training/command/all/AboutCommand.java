@@ -6,11 +6,9 @@ import org.training.model.dto.User;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class LogOutCommand implements Command {
+public class AboutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
-        CommandUtility.setUserRole(request, User.ROLE.UNKNOWN, "");
-//        request.getSession().invalidate();
-        return "redirect:/unauth/login";
+        return "/WEB-INF/about.jsp";
     }
 }

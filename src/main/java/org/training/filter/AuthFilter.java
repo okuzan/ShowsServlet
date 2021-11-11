@@ -1,5 +1,7 @@
 package org.training.filter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.training.model.dto.User;
 import org.training.util.Utilities;
 
@@ -12,9 +14,11 @@ import java.util.ResourceBundle;
 
 public class AuthFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
+
+    private static final Logger logger = LogManager.getLogger(AuthFilter.class);
 
     @Override
     public void doFilter(ServletRequest request,
@@ -37,19 +41,12 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println("_________");
-        System.out.println(username);
-        System.out.println(role);
-        System.out.println(path);
-        System.out.println(zone);
         boolean permitted = true;
         switch (zone) {
             case "auth":
                 permitted = (username != null && !username.isEmpty());
                 break;
             case "unauth":
-                System.out.println(username);
                 permitted = (username == null || username.isEmpty());
                 break;
             case "user":
@@ -59,13 +56,14 @@ public class AuthFilter implements Filter {
                 permitted = (role == User.ROLE.ADMIN);
                 break;
         }
-        System.out.println("VERDICT: " + permitted);
+
+        logger.info("verdict: " + permitted);
         if (permitted) {
             filterChain.doFilter(request, response);
         } else {
             ResourceBundle bundle = Utilities.getBundle((HttpServletRequest) request);
             request.setAttribute("flash.access", bundle.getString("access.denied"));
-            ((HttpServletResponse) response).sendError(405, bundle.getString("access.denied"));
+            res.sendError(405, bundle.getString("access.denied"));
         }
     }
 
